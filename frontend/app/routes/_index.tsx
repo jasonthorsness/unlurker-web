@@ -1,26 +1,33 @@
-import React, { Fragment } from "react";
-import Link from "next/link";
+// app/routes/index.tsx
+import type { LoaderFunction } from "@remix-run/node";
+import { json } from "@remix-run/node";
+import { useLoaderData } from "@remix-run/react";
+import { Fragment } from "react";
 import Controls from "./controls";
 
-interface SearchParams {
-  "min-by"?: string;
-  "max-age"?: string;
-  window?: string;
+interface Item {
+  id: number;
+  by: string;
+  age: string;
+  text: string;
+  indent: string;
+  root: boolean;
+  active: boolean;
 }
 
-export const metadata = {
-  title: "Unlurker",
-  description:
-    "Unlurker helps you find the liveliest discussions on news.ycombinator.com so you can jump in before discussion dies.",
-};
+interface LoaderData {
+  data: Item[];
+  minBy: string;
+  maxAge: string;
+  windowParam: string;
+}
 
-export const dynamic = "force-dynamic";
-
-export default async function Page({ searchParams }: { searchParams: Promise<SearchParams> }) {
-  const sp = await searchParams;
-  const minBy = sp["min-by"] || "3";
-  const maxAge = sp["max-age"] || "8h";
-  const windowParam = sp.window || "30m";
+export const loader: LoaderFunction = async ({ request }) => {
+  const url = new URL(request.url);
+  const sp = url.searchParams;
+  const minBy = sp.get("min-by") ?? "3";
+  const maxAge = sp.get("max-age") ?? "8h";
+  const windowParam = sp.get("window") ?? "30m";
 
   const params = new URLSearchParams({
     "min-by": minBy,
@@ -28,25 +35,25 @@ export default async function Page({ searchParams }: { searchParams: Promise<Sea
     window: windowParam,
   }).toString();
 
-  const url = `http://${process.env["UNL_API"]}/active?${params}`;
-  const res = await fetch(url);
-  if (!res.ok) {
-    throw new Error("Failed to fetch data");
-  }
-  let data: any[] = await res.json();
-  if (data == null) {
-    data = [];
-  }
+  const res = await fetch(`http://${process.env.UNL_API}/active?${params}`);
+  if (!res.ok) throw new Error("Failed to fetch data");
+  const data = (await res.json()) ?? [];
+
+  return json<LoaderData>({ data, minBy, maxAge, windowParam });
+};
+
+export default function Index() {
+  const { data, minBy, maxAge, windowParam } = useLoaderData<LoaderData>();
 
   return (
-    <main className="font-sans">
+    <main>
       <div className="flex flex-col sm:flex-row sm:items-center justify-between mb-4 p-1">
-        <Link
+        <a
           href="/"
           className="text-green-600 dark:text-green-500 font-bold text-xl mb-1 sm:mb-0"
         >
           Unlurker
-        </Link>
+        </a>
         <Controls minBy={minBy} maxAge={maxAge} windowParam={windowParam} />
       </div>
 
@@ -57,7 +64,9 @@ export default async function Page({ searchParams }: { searchParams: Promise<Sea
           const ageClass = item.active
             ? "text-blue-600 dark:text-blue-400 font-bold"
             : "text-blue-400 dark:text-blue-600 font-bold";
-          const titleClass = item.root ? "text-green-600 dark:text-green-500 font-bold" : "";
+          const titleClass = item.root
+            ? "text-green-600 dark:text-green-500 font-bold"
+            : "";
 
           let indent = item.indent;
           if (indent !== "") {
@@ -67,7 +76,11 @@ export default async function Page({ searchParams }: { searchParams: Promise<Sea
 
           return (
             <Fragment key={item.id}>
-              <a href={link} target="unl" className={`text-right hidden sm:block ${gapClass}`}>
+              <a
+                href={link}
+                target="unl"
+                className={`text-right hidden sm:block ${gapClass}`}
+              >
                 {item.by}
               </a>
               <a

@@ -1,10 +1,6 @@
-@import "tailwindcss";
-
-@layer base {
-  :focus-visible {
-    @apply outline outline-2 outline-black dark:outline-white;
-  }
-}
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
 :root {
   --foreground-rgb: 0, 0, 0;
