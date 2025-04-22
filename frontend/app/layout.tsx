@@ -6,8 +6,6 @@ export const metadata: Metadata = {
   metadataBase: new URL("https://hn.unlurker.com"),
 };
 
-export const runtime = "edge";
-
 export default function RootLayout({
   children,
 }: Readonly<{
