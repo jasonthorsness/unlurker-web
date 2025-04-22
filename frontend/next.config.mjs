@@ -10,6 +10,15 @@ const nextConfig = {
           { key: "Cache-Control", value: "public, max-age=3000000, stale-while-revalidate" },
         ],
       },
+      {
+        source: "/",
+        headers: [
+          {
+            key: "Cache-Control",
+            value: "max-age=60, stale-while-revalidate=60",
+          },
+        ],
+      },
     ];
   },
 };

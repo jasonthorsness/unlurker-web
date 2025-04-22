@@ -14,7 +14,7 @@ export const metadata = {
     "Unlurker helps you find the liveliest discussions on news.ycombinator.com so you can jump in before discussion dies.",
 };
 
-export const revalidate = 60;
+export const dynamic = "force-dynamic";
 
 export default async function Page({ searchParams }: { searchParams: Promise<SearchParams> }) {
   const sp = await searchParams;
