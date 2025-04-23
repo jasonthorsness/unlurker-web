@@ -4,7 +4,7 @@ go 1.24.2
 
 require (
 	github.com/gin-gonic/gin v1.10.0
-	github.com/jasonthorsness/unlurker v0.1.1
+	github.com/jasonthorsness/unlurker v0.1.2
 	github.com/mattn/go-sqlite3 v1.14.28
 )
 

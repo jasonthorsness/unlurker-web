@@ -228,5 +228,5 @@ func prettyFormatDuration(d time.Duration) string {
 	hours := totalMinutes / minutesPerHour
 	minutes := totalMinutes % minutesPerHour
 
-	return fmt.Sprintf("%dh%2dm", hours, minutes)
+	return fmt.Sprintf("%dh %2dm", hours, minutes)
 }

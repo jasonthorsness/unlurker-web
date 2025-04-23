@@ -1,37 +1,31 @@
 {
   "name": "frontend",
   "private": true,
-  "sideEffects": false,
   "type": "module",
   "scripts": {
-    "build": "remix vite:build",
-    "dev": "remix vite:dev",
-    "typecheck": "tsc"
+    "build": "react-router build",
+    "dev": "react-router dev",
+    "start": "react-router-serve ./build/server/index.js",
+    "typecheck": "react-router typegen && tsc"
   },
   "dependencies": {
-    "@remix-run/node": "2.10.0",
-    "@remix-run/react": "2.10.0",
-    "@remix-run/server-runtime": "2.10.0",
-    "@vercel/analytics": "^1.2.2",
-    "@vercel/remix": "2.10.0",
-    "isbot": "^4",
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0"
+    "@react-router/node": "^7.1.5",
+    "isbot": "^5.1.17",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
+    "react-router": "^7.1.5"
   },
   "devDependencies": {
-    "@remix-run/dev": "2.10.0",
-    "@remix-run/eslint-config": "2.10.0",
-    "@types/react": "^18.2.20",
-    "@types/react-dom": "^18.2.7",
-    "autoprefixer": "^10.4.21",
-    "eslint": "^8.38.0",
-    "postcss": "^8.5.3",
-    "tailwindcss": "^3.4.17",
-    "typescript": "^5.1.6",
-    "vite": "^5.1.0",
-    "vite-tsconfig-paths": "^4.2.1"
-  },
-  "engines": {
-    "node": ">=18.0.0"
+    "@react-router/dev": "^7.1.5",
+    "@tailwindcss/vite": "^4.0.0",
+    "@types/node": "^20",
+    "@types/react": "^19.0.1",
+    "@types/react-dom": "^19.0.1",
+    "@vercel/node": "^5.1.2",
+    "@vercel/react-router": "^1.0.2",
+    "tailwindcss": "^4.0.0",
+    "typescript": "^5.7.2",
+    "vite": "^5.4.11",
+    "vite-tsconfig-paths": "^5.1.4"
   }
 }
