@@ -41,10 +41,16 @@ export default function Home({ loaderData }: Route.ComponentProps) {
       const items =
         containerRef.current.querySelectorAll<HTMLElement>(".truncate");
       items.forEach((item) => {
+        const parent = item.parentElement;
+
+        const cb = parent?.querySelector<HTMLInputElement>(
+          "input[type=checkbox].peer"
+        );
+
         if (item.scrollWidth > item.clientWidth) {
-          item.parentElement?.setAttribute("data-truncated", "true");
-        } else {
-          item.parentElement?.removeAttribute("data-truncated");
+          parent?.setAttribute("data-truncated", "true");
+        } else if (!cb?.checked) {
+          parent?.removeAttribute("data-truncated");
         }
       });
     };
