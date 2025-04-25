@@ -120,7 +120,7 @@ export default function Home({ loaderData }: Route.ComponentProps) {
                 aria-label={`Open item on news.ycombinator.com`}
                 className={`text-right block font-mono ${ageClass} ${gapClass}`}
               >
-                {item.age}
+                <span style={{ whiteSpace: "pre" }}>{item.age}</span>
               </a>
               <div className={`flex items-start space-x-1 min-w-0 ${gapClass}`}>
                 <input
