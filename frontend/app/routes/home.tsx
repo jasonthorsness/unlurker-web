@@ -1,4 +1,4 @@
-import type { Route } from "./+types/_index";
+import type { Route } from "./+types/home";
 import Controls from "./controls";
 import { Fragment } from "react";
 import { useEffect, useRef } from "react";
@@ -38,20 +38,32 @@ export default function Home({ loaderData }: Route.ComponentProps) {
   useEffect(() => {
     const checkTruncation = () => {
       if (!containerRef.current) return;
-      const items =
-        containerRef.current.querySelectorAll<HTMLElement>(".truncate");
-      items.forEach((item) => {
-        const parent = item.parentElement;
 
-        const cb = parent?.querySelector<HTMLInputElement>(
-          "input[type=checkbox].peer"
-        );
+      type Change = {
+        parent: HTMLElement;
+        truncated: boolean;
+        checked: boolean;
+      };
 
-        if (item.scrollWidth > item.clientWidth) {
-          parent?.setAttribute("data-truncated", "true");
-        } else if (!cb?.checked) {
-          parent?.removeAttribute("data-truncated");
-        }
+      const changes: Change[] = [];
+
+      containerRef.current
+        .querySelectorAll<HTMLElement>(".truncate")
+        .forEach((item) => {
+          const parent = item.parentElement!;
+          const cb = parent.firstElementChild as HTMLInputElement;
+          const needsTrunc = item.scrollWidth > item.clientWidth;
+          changes.push({ parent, truncated: needsTrunc, checked: cb?.checked });
+        });
+
+      window.requestAnimationFrame(() => {
+        changes.forEach(({ parent, truncated, checked }) => {
+          if (checked || truncated) {
+            parent.setAttribute("data-truncated", "true");
+          } else if (!checked) {
+            parent.removeAttribute("data-truncated");
+          }
+        });
       });
     };
 
@@ -76,7 +88,7 @@ export default function Home({ loaderData }: Route.ComponentProps) {
         ref={containerRef}
         className="grid grid-cols-[auto_1fr] pl-1 sm:pl-0 sm:grid-cols-[auto_auto_1fr] text-sm gap-x-[1ch] text-xs"
       >
-        {data.map((item, idx) => {
+        {data.map((item: any, idx: number) => {
           const link = `https://news.ycombinator.com/item?id=${item.id}`;
           const gapClass = item.root && idx !== 0 ? "mt-[2ch]" : "";
           const ageClass = item.active
@@ -98,14 +110,14 @@ export default function Home({ loaderData }: Route.ComponentProps) {
             <Fragment key={item.id}>
               <a
                 href={link}
-                target="unl"
+                aria-label={`Open user page for ${item.by}`}
                 className={`text-right hidden sm:block ${gapClass}`}
               >
                 {item.by}
               </a>
               <a
                 href={link}
-                target="unl"
+                aria-label={`Open item on news.ycombinator.com`}
                 className={`text-right block font-mono ${ageClass} ${gapClass}`}
               >
                 {item.age}
@@ -114,27 +126,36 @@ export default function Home({ loaderData }: Route.ComponentProps) {
                 <input
                   type="checkbox"
                   id={toggleId}
-                  className="peer sr-only hidden theme-midnight:block"
+                  aria-label="expanded"
+                  className="peer sr-only invisible theme-midnight:visible"
                 />
                 <a
                   href={link}
-                  target="unl"
+                  aria-label={`Open item on news.ycombinator.com`}
+                  data-toggle-id={toggleId}
                   className={`
             truncate whitespace-nowrap block
             peer-checked:whitespace-normal peer-checked:break-words
             ${titleClass}
           `}
                 >
-                  <span className="font-mono whitespace-pre text-gray-400 dark:text-gray-600">
+                  <span
+                    className="font-mono whitespace-pre text-gray-400 dark:text-gray-600"
+                    aria-hidden
+                  >
                     {indent}
                   </span>
                   <span>{item.text}</span>
                 </a>
                 <label
                   htmlFor={toggleId}
-                  className="w-4 h-4 border rounded cursor-pointer hidden theme-midnight:block
-                     peer-checked:bg-blue-500 peer-checked:border-transparent shrink-0"
-                />
+                  aria-label="expand/collapse"
+                  className="relative inline-block w-10 h-4 -ml-6 cursor-pointer shrink-0 invisible theme-midnight:visible text-gray-400 dark:text-gray-600
+                  before:content-['▼']
+                  before:absolute before:inset-0
+                  before:flex before:items-center before:justify-end before:pr-1
+                  peer-checked:before:content-['▲']"
+                ></label>
               </div>
             </Fragment>
           );
