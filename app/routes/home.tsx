@@ -3,10 +3,6 @@ import Controls from "./controls";
 import { Fragment } from "react";
 import { useEffect, useRef } from "react";
 
-export function meta({}: Route.MetaArgs) {
-  return [{ title: "Unlurker" }, { name: "description", content: "Welcome to Unlurker!" }];
-}
-
 export async function loader({ request }: Route.LoaderArgs) {
   const url = new URL(request.url);
   const sp = url.searchParams;

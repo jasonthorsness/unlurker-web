@@ -30,6 +30,34 @@ export const links: Route.LinksFunction = () => [
   },
 ];
 
+export function meta() {
+  return [
+    { title: "Unlurker" },
+    { name: "description", content: "Unlurker is a view of active discussions on Hacker News." },
+    { property: "og:title", content: "Unlurker" },
+    {
+      property: "og:description",
+      content: "Unlurker is a view of active discussions on Hacker News.",
+    },
+    { property: "og:url", content: "https://hn.unlurker.com" },
+    { property: "og:type", content: "website" },
+    { property: "og:image", content: "https://hn.unlurker.com/social-1200x630.jpg" },
+    { property: "og:image:width", content: "1200" },
+    { property: "og:image:height", content: "630" },
+    { property: "og:image", content: "https://hn.unlurker.com/social-1080x1350.jpg" },
+    { property: "og:image:width", content: "1080" },
+    { property: "og:image:height", content: "1350" },
+    { name: "twitter:card", content: "summary_large_image" },
+    { name: "twitter:title", content: "Unlurker" },
+    {
+      name: "twitter:description",
+      content: "Unlurker is a view of active discussions on Hacker News.",
+    },
+    { name: "twitter:image", content: "https://hn.unlurker.com/social-1200x630.jpg" },
+    { name: "twitter:url", content: "https://hn.unlurker.com" },
+  ];
+}
+
 export function Layout({ children }: { children: React.ReactNode }) {
   let { fathomSiteId } = useLoaderData<{ fathomSiteId: string }>();
 
