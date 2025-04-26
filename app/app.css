@@ -1,5 +1,6 @@
 @import "tailwindcss";
-@custom-variant theme-midnight (&:where([data-truncated="true"] *));
+@plugin "@tailwindcss/typography";
+@custom-variant truncated (&:where([data-truncated="true"] *));
 
 :root {
   --foreground-rgb: 0, 0, 0;
