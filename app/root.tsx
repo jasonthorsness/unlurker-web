@@ -7,7 +7,6 @@ import {
   ScrollRestoration,
   useLoaderData,
 } from "react-router";
-import DoubleChevron from "./doubleChevron";
 import FathomAnalytics from "./fathomAnalytics";
 
 import type { Route } from "./+types/root";
@@ -74,13 +73,6 @@ export function Layout({ children }: { children: React.ReactNode }) {
       </head>
       <body id="top" className="max-w-7xl mx-auto p-0 sm:p-1 font-sans">
         {children}
-        <div className="text-center pt-8">
-          <a href="#top">
-            <DoubleChevron />
-            <span>&nbsp;Top&nbsp;</span>
-            <DoubleChevron />
-          </a>
-        </div>
         <div className="block h-[10vh]"></div>
         <FathomAnalytics siteID={fathomSiteId} />
         <ScrollRestoration />

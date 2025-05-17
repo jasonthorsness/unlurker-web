@@ -1,27 +1,23 @@
 import { Outlet } from "react-router";
+import Nav from "./nav";
+import DoubleChevron from "../doubleChevron";
 
 export default function MdxLayout() {
   return (
-    <main>
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between mb-2 p-1">
-        <div className="flex items-center space-x-2 ">
-          <a href="/" className="text-green-600 dark:text-green-500 font-bold text-xl mb-1 sm:mb-0">
-            Unlurker
-          </a>
-          <span className="text-green-600 dark:text-green-500 font-bold text-xl mb-1 sm:mb-0 aria-hidden">
-            |
-          </span>
-          <a
-            href="/about"
-            className="text-green-600 dark:text-green-500 font-bold text-xl mb-1 sm:mb-0 hover:underline"
-          >
-            About
-          </a>
+    <>
+      <main>
+        <Nav />
+        <div className="p-1 prose dark:prose-invert max-w-5xl">
+          <Outlet />
         </div>
+      </main>
+      <div className="text-center pt-8">
+        <a href="#top">
+          <DoubleChevron />
+          <span>&nbsp;Top&nbsp;</span>
+          <DoubleChevron />
+        </a>
       </div>
-      <div className="p-1 prose dark:prose-invert max-w-5xl">
-        <Outlet />
-      </div>
-    </main>
+    </>
   );
 }

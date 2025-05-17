@@ -8,6 +8,8 @@
     "typecheck": "react-router typegen && tsc"
   },
   "dependencies": {
+    "@headlessui/react": "^2.2.3",
+    "@heroicons/react": "^2.2.0",
     "@mdx-js/rollup": "^3.1.0",
     "@react-router/node": "^7.1.5",
     "@react-router/serve": "*",

@@ -18,6 +18,17 @@ To find fresh discussions just getting started, try something like
 People still comment on really old stories! Scroll to the bottom of
 [1/72h/120m](https://hn.unlurker.com?min-by=1&max-age=72h&window=120m&user=1).
 
+## What about Replay?
+
+[Replay](/replay) animates the comment history for a given item. You can view the replay for any
+particular story or comment by entering the id of the item from the end of a Hacker News URL.
+
+For example:
+
+- [Launch of DropBox](https://hn.unlurker.com/replay?item=8863)
+- [Launch of Stripe](https://hn.unlurker.com/replay?item=3053883)
+- [Launch of React](https://hn.unlurker.com/replay?item=5789055)
+
 ## How does it work?
 
 The [Unlurker Frontend](https://github.com/jasonthorsness/unlurker-web) is a small
