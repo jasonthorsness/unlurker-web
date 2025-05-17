@@ -192,13 +192,13 @@ export default function Home({ loaderData }: Route.ComponentProps) {
               </div>
               <ComboboxOptions
                 anchor="bottom"
-                className="border border-white/5 p-1 [--anchor-gap:--spacing(1)] empty:invisible bg-black"
+                className="border border-white/5 p-1 [--anchor-gap:--spacing(1)] empty:invisible bg-white dark:bg-black"
               >
                 {query != "" && (
                   <ComboboxOption
                     key={0}
                     value={query}
-                    className="group flex cursor-default items-center gap-2 px-3 py-1.5 select-none data-focus:bg-white/10"
+                    className="group flex cursor-default items-center gap-2 px-3 py-1.5 select-none data-focus:bg-black/10 dark:data-focus:bg-white/10"
                   >
                     {query}
                   </ComboboxOption>
@@ -209,7 +209,7 @@ export default function Home({ loaderData }: Route.ComponentProps) {
                     <ComboboxOption
                       key={item.id}
                       value={String(item.id)}
-                      className="group flex cursor-default items-center gap-2 px-3 py-1.5 select-none data-focus:bg-white/10"
+                      className="group flex cursor-default items-center gap-2 px-3 py-1.5 select-none data-focus:bg-black/10 dark:data-focus:bg-white/10"
                     >
                       {item.id} {item.text}
                     </ComboboxOption>
