@@ -45,17 +45,29 @@ export default function Controls({ minBy, maxAge, windowParam, user }: ControlsP
           onChange={onChange}
           className="border border-black dark:border-white text-black dark:text-white bg-white dark:bg-black text-black dark:text-white"
         >
-          {["1h", "2h", "3h", "4h", "6h", "8h", "12h", "18h", "24h", "36h", "48h", "72h"].map(
-            (val) => (
-              <option
-                key={val}
-                value={val}
-                className="bg-white dark:bg-black text-black dark:text-white"
-              >
-                {val}
-              </option>
-            )
-          )}
+          {[
+            "1h",
+            "2h",
+            "3h",
+            "4h",
+            "6h",
+            "8h",
+            "12h",
+            "18h",
+            "24h",
+            "36h",
+            "48h",
+            "72h",
+            "168h",
+          ].map((val) => (
+            <option
+              key={val}
+              value={val}
+              className="bg-white dark:bg-black text-black dark:text-white"
+            >
+              {val}
+            </option>
+          ))}
         </select>
       </label>
 

@@ -34,9 +34,14 @@ interface RawItem {
 
 const suggestedStories = [
   { id: 8863, text: "My YC app: Dropbox - Throw away your USB drive" },
+  { id: 292634, text: "Who cares about Chrome. IE6 Has 25% Market Share" },
+  { id: 599852, text: "Bitcoin: peer-to-peer network based anonymous digital currency" },
+  { id: 934142, text: "Google Go: A New Programming Language That’s Python Meets C++" },
   { id: 3053883, text: "Stripe: instant payment processing for developers" },
   { id: 5789055, text: "React, a JavaScript library for building user interfaces" },
   { id: 8624160, text: "Launching in 2015: A Certificate Authority to Encrypt the Entire Web" },
+  { id: 9551937, text: "Announcing Rust 1.0" },
+  { id: 22933479, text: "Vercel, formerly Zeit, raises $21M Series A" },
   { id: 33804874, text: "OpenAI ChatGPT: Optimizing language models for dialogue" },
 ];
 
@@ -88,7 +93,7 @@ export default function Home({ loaderData }: Route.ComponentProps) {
     if (isJogging || !isPlaying) return;
     const interval = setInterval(() => {
       setCurrentFrame((prev) => (prev + 1) % frames.length);
-    }, 500 / speedMultiplier);
+    }, 1000 / speedMultiplier);
     return () => clearInterval(interval);
   }, [frames.length, isPlaying, isJogging, speedMultiplier]);
 
@@ -179,6 +184,13 @@ export default function Home({ loaderData }: Route.ComponentProps) {
               <div className="relative">
                 <ComboboxInput
                   onChange={(event) => setQuery(event.target.value)}
+                  onKeyDown={(e) => {
+                    if (e.key === "Enter" && query) {
+                      e.preventDefault();
+                      setItem(query);
+                      window.location.href = `/replay?item=${query}`;
+                    }
+                  }}
                   autoComplete="off"
                   aria-label="item"
                   className="w-[12ch] px-1 border border-black dark:border-white text-black dark:text-white bg-white dark:bg-black placeholder-white"
@@ -203,17 +215,15 @@ export default function Home({ loaderData }: Route.ComponentProps) {
                     {query}
                   </ComboboxOption>
                 )}
-                {suggestedStories
-                  .filter((z) => String(z.id) != item)
-                  .map((item) => (
-                    <ComboboxOption
-                      key={item.id}
-                      value={String(item.id)}
-                      className="group flex cursor-default items-center gap-2 px-3 py-1.5 select-none data-focus:bg-black/10 dark:data-focus:bg-white/10"
-                    >
-                      {item.id} {item.text}
-                    </ComboboxOption>
-                  ))}
+                {suggestedStories.map((item) => (
+                  <ComboboxOption
+                    key={item.id}
+                    value={String(item.id)}
+                    className="group flex cursor-default items-center gap-2 px-3 py-1.5 select-none data-focus:bg-black/10 dark:data-focus:bg-white/10"
+                  >
+                    {item.id} {item.text}
+                  </ComboboxOption>
+                ))}
               </ComboboxOptions>
             </Combobox>
             <select
@@ -225,7 +235,7 @@ export default function Home({ loaderData }: Route.ComponentProps) {
               }}
               className="border border-black dark:border-white text-black dark:text-white bg-white dark:bg-black"
             >
-              {["0.5x", "1x", "2x", "4x"].map((val) => (
+              {["1x", "2x", "4x", "8x"].map((val) => (
                 <option key={val} value={val}>
                   {val}
                 </option>
@@ -279,7 +289,13 @@ export default function Home({ loaderData }: Route.ComponentProps) {
                 initial={{ opacity: 0, y: 0 }}
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: 0 }}
-                transition={{ duration: isJogging ? 0 : 0.2 / speedMultiplier }}
+                transition={{
+                  duration: isJogging
+                    ? 0
+                    : 0.4 / speedMultiplier > 0.2
+                    ? 0.2
+                    : 0.4 / speedMultiplier,
+                }}
                 className={`
                 grid grid-cols-[auto_1fr] pl-1 sm:pl-0
                 ${user === "1" ? "sm:grid-cols-[auto_auto_1fr]" : ""}
