@@ -347,7 +347,7 @@ function ListItem({
   return (
     <>
       {user && (
-        <div style={{ width: `${longestByLength}ch` }}>
+        <div className="hidden sm:block" style={{ width: `${longestByLength}ch` }}>
           <By by={by} className={`${gapClass}`} />
         </div>
       )}
