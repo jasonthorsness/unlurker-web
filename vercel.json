@@ -19,6 +19,15 @@
       ]
     },
     {
+      "source": "/replay(.*)",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=240, stale-while-revalidate=60"
+        }
+      ]
+    },
+    {
       "source": "/",
       "headers": [
         {
