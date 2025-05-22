@@ -18,14 +18,11 @@ interface RawItem {
 }
 
 export async function loader({ request }: Route.LoaderArgs) {
-  const ua = request.headers.get("user-agent") ?? "";
-  const isMobile = /Mobi|Android|iPhone|iPad|iPod/.test(ua);
-
   const sp = new URL(request.url).searchParams;
   const minBy = sp.get("min-by") ?? "3";
   const maxAge = sp.get("max-age") ?? "8h";
   const windowParam = sp.get("window") ?? "30m";
-  const user = sp.get("user") ?? (isMobile ? "0" : "1");
+  const user = sp.get("user") ?? "1";
 
   const params = new URLSearchParams({
     "min-by": minBy,

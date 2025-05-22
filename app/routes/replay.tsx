@@ -46,9 +46,6 @@ const suggestedStories = [
 ];
 
 export async function loader({ request }: Route.LoaderArgs) {
-  const ua = request.headers.get("user-agent") ?? "";
-  const isMobile = /Mobi|Android|iPhone|iPad|iPod/.test(ua);
-
   const sp = new URL(request.url).searchParams;
   const item = sp.get("item") ?? String(suggestedStories[0].id);
 
@@ -58,11 +55,11 @@ export async function loader({ request }: Route.LoaderArgs) {
 
   const longestByLength = data.reduce((acc, a) => (a?.by?.length > acc ? a?.by?.length : acc), 0);
 
-  return { data, item, isMobile, longestByLength };
+  return { data, item, longestByLength };
 }
 
 export default function Home({ loaderData }: Route.ComponentProps) {
-  const { data, item: defaultItem, isMobile, longestByLength } = loaderData;
+  const { data, item: defaultItem, longestByLength } = loaderData;
   const [currentFrame, setCurrentFrame] = useState(0);
   const [isPlaying, setIsPlaying] = useState(true);
   const [isJogging, setIsJogging] = useState(false);
@@ -79,7 +76,7 @@ export default function Home({ loaderData }: Route.ComponentProps) {
 
   const [windowMinutes, setWindowMinutes] = useState(defaultWindow);
   const [speedMultiplier, setSpeedMultiplier] = useState(1);
-  const [user, setUser] = useState(isMobile ? "0" : "1");
+  const [user, setUser] = useState("1");
   const [query, setQuery] = useState("");
   const [item, setItem] = useState<string | null>(defaultItem);
 
