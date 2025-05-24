@@ -7,27 +7,41 @@ interface TextProps {
   text: string;
   className?: string;
   root: boolean;
+  secondChance?: boolean;
 }
 
-const Text: React.FC<TextProps> = ({ link, toggleId, indent, text, root, className = "" }) => {
+const Text: React.FC<TextProps> = ({
+  link,
+  toggleId,
+  indent,
+  text,
+  root,
+  secondChance,
+  className = "",
+}) => {
   const titleClassName = root ? "text-green-600 dark:text-green-500 font-bold" : "";
   return (
-    <div className={`flex items-start space-x-1 min-w-0 ${className}`}>
+    <div className={`flex relative items-start space-x-1 min-w-0 ${className}`}>
       <input
         type="checkbox"
         id={toggleId}
         aria-label="expanded"
         className="peer sr-only invisible truncated:visible"
       />
+      {secondChance && (
+        <div className="absolute -top-3 left-0 text-xs text-gray-400 dark:text-gray-600">
+          ↙ time adjusted for second-chance
+        </div>
+      )}
       <a
         href={link}
         aria-label="Open item on news.ycombinator.com"
         data-toggle-id={toggleId}
         className={`
-                        truncate whitespace-nowrap block
-                        peer-checked:whitespace-normal peer-checked:break-words
-                        ${titleClassName}
-                    `}
+                          truncate whitespace-nowrap block
+                          peer-checked:whitespace-normal peer-checked:break-words
+                          ${titleClassName}
+                      `}
       >
         <span className="font-mono whitespace-pre text-gray-400 dark:text-gray-600" aria-hidden>
           {indent}

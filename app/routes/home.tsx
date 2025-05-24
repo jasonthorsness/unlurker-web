@@ -15,6 +15,7 @@ interface RawItem {
   id: number;
   depth: number;
   active: boolean;
+  secondchance?: boolean;
 }
 
 export async function loader({ request }: Route.LoaderArgs) {
@@ -44,6 +45,7 @@ export async function loader({ request }: Route.LoaderArgs) {
     age: i.age,
     root: i.depth === 0,
     indent: indents[idx],
+    secondChance: i.secondchance,
   }));
 
   return { data, minBy, maxAge, windowParam, user };
@@ -77,6 +79,7 @@ export default function Home({ loaderData }: Route.ComponentProps) {
                 {...item}
                 gapClass={item.root && idx !== 0 ? "mt-[2ch]" : ""}
                 user={user === "1"}
+                secondChance={item.secondChance}
               />
             );
           })}
@@ -103,6 +106,7 @@ type ListItemProps = {
   root: boolean;
   gapClass: string;
   user: boolean;
+  secondChance?: boolean;
 };
 
 const ListItem = memo(function ListItem({
@@ -115,6 +119,7 @@ const ListItem = memo(function ListItem({
   root,
   gapClass,
   user,
+  secondChance,
 }: ListItemProps) {
   return (
     <>
@@ -140,6 +145,7 @@ const ListItem = memo(function ListItem({
         text={text}
         className={gapClass}
         root={root}
+        secondChance={secondChance ?? false}
       />
     </>
   );
