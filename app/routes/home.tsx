@@ -18,6 +18,11 @@ interface RawItem {
   secondchance?: boolean;
 }
 
+interface ApiResponse {
+  items: RawItem[];
+  secondChanceFailed: boolean;
+}
+
 export async function loader({ request }: Route.LoaderArgs) {
   const sp = new URL(request.url).searchParams;
   const minBy = sp.get("min-by") ?? "3";
@@ -34,10 +39,13 @@ export async function loader({ request }: Route.LoaderArgs) {
 
   const res = await fetch(`${process.env.UNL_API}/active?${params}`);
   if (!res.ok) throw new Error("Failed to fetch data");
-  const rawData = ((await res.json()) ?? []) as RawItem[];
+  const apiResponse = ((await res.json()) ?? {
+    items: [],
+    secondChanceFailed: false,
+  }) as ApiResponse;
 
-  const indents = calculateIndents(rawData);
-  const data = rawData.map((i, idx) => ({
+  const indents = calculateIndents(apiResponse.items);
+  const data = apiResponse.items.map((i, idx) => ({
     by: i.by,
     text: i.text,
     id: i.id,
@@ -48,11 +56,18 @@ export async function loader({ request }: Route.LoaderArgs) {
     secondChance: i.secondchance,
   }));
 
-  return { data, minBy, maxAge, windowParam, user };
+  return {
+    data,
+    minBy,
+    maxAge,
+    windowParam,
+    user,
+    secondChanceFailed: apiResponse.secondChanceFailed,
+  };
 }
 
 export default function Home({ loaderData }: Route.ComponentProps) {
-  const { data, minBy, maxAge, windowParam, user } = loaderData;
+  const { data, minBy, maxAge, windowParam, user, secondChanceFailed } = loaderData;
 
   const containerRef = useRef<HTMLDivElement>(null);
   useTruncator(containerRef);
@@ -63,6 +78,12 @@ export default function Home({ loaderData }: Route.ComponentProps) {
         <Nav>
           <Controls minBy={minBy} maxAge={maxAge} windowParam={windowParam} user={user} />
         </Nav>
+
+        {secondChanceFailed && (
+          <div className="mb-4">
+            <p className="text-sm">⚠️ Failed to adjust times for second-chance articles</p>
+          </div>
+        )}
 
         <div
           ref={containerRef}
